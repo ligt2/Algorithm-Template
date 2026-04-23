@@ -83,7 +83,7 @@ int main() {
     // 预期: 0 2 5 5 3
     cout << "1D Result: ";
     for(int x : res1) cout << x << " "; 
-    cout << "\n";
+    cout << "\n";       
 
     Diff2D<int> d2(4, 4);
     d2.add(1, 1, 2, 2, 1);

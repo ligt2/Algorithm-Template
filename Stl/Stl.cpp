@@ -413,7 +413,6 @@ void test_queue() {
     int back = q.back();      // 3
     q.pop();                  // 弹出1
     front = q.front();        // 2
-    
     cout << "[queue] OK\n";
 }
 

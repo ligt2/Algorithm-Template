@@ -9,13 +9,13 @@ const int INF = 0x3f3f3f3f;
 struct Euler {
     ll M = 998244353;  // 按题目改
     // 快速幂: a^b % m
-    ll pw(ll a, ll b,ll mod=-1) {
+    ll pw(ll base, ll exp,ll mod=-1) {
         if(mod==-1) mod=M;
     	ll res = 1;
-  		  while (b) {
-        	if (b & 1) res = (res * a) ;
-        	a = (a * a) ;
-        	b >>= 1; 
+  		  while (exp) {
+        	if (exp & 1) res = (res * base)%mod ;
+        	base = (base * base)%mod ;
+        	exp >>= 1; 
     	}
     	return res;
 	}
@@ -42,21 +42,30 @@ struct Euler {
         if (n > 1) r.push_back({n, 1});
         return r;
     }
+
     // 线性筛 [1,n]: O(n)
-    vector<int> p, ph; vector<bool> v;
-    void init(int n) {
-        ph.resize(n + 1); v.resize(n + 1);
-        p.reserve(n / 10); ph[1] = 1;
-        for (int i = 2; i <= n; i++) {
-            if (!v[i]) p.push_back(i), ph[i] = i - 1;
-            for (int j : p) {
-                if (i * j > n) break; v[i * j] = 1;
-                if (i % j == 0) { ph[i * j] = ph[i] * j; break; }
-                ph[i * j] = ph[i] * (j - 1);
-            }
-        }
-    }
-    
+
+vector<ll> ph,p; vector<bool>is_prime;
+void init(int n) {
+	ph.resize(n+1);is_prime.resize(n+1,true);p.reserve(n/10);
+    ph[1]=1;is_prime[1]=false;
+	for(int i=2;i<=n;i++) {
+		if(is_prime[i]) {
+			p.push_back(i);
+			ph[i]=i-1;	
+		}
+		for(int j:p) {
+			if(1LL*i*j>n) break;
+			is_prime[i*j]=false;
+			if(i%j==0) {
+				ph[i*j]=ph[i]*j;
+				break;
+			}	
+            else ph[i*j]=ph[i]*(j-1);
+		}	
+	}
+} 
+
     // 判断质数: O(√n)
     bool isp(ll n) { if (n < 2) return 0; for (ll i = 2; i * i <= n; i++) if (n % i == 0) return 0; return 1; }
     // gcd
